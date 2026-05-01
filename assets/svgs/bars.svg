@@ -1,0 +1,7 @@
+<svg class="lp-svg-bars" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect class="lp-bar lp-bar-1" x="15" y="20" width="8" height="60" rx="4" fill="currentColor"/>
+  <rect class="lp-bar lp-bar-2" x="32" y="20" width="8" height="60" rx="4" fill="currentColor"/>
+  <rect class="lp-bar lp-bar-3" x="49" y="20" width="8" height="60" rx="4" fill="currentColor"/>
+  <rect class="lp-bar lp-bar-4" x="66" y="20" width="8" height="60" rx="4" fill="currentColor"/>
+  <rect class="lp-bar lp-bar-5" x="83" y="20" width="8" height="60" rx="4" fill="currentColor"/>
+</svg>

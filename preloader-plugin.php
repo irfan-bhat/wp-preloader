@@ -114,6 +114,25 @@ function lp_enqueue_frontend() {
         LP_VERSION
     );
 
+    // Enqueue animation styles based on selected speed
+    $animation_speed = sanitize_text_field( $o['animation_speed'] ?? 'normal' );
+    wp_enqueue_style(
+        'wp-preloader-animation-' . $animation_speed,
+        LP_URL . 'css/animations/' . $animation_speed . '.css',
+        [ 'wp-preloader' ],
+        LP_VERSION
+    );
+
+    // Enqueue progress bar styles if enabled
+    if ( ! empty( $o['show_progress'] ) ) {
+        wp_enqueue_style(
+            'wp-preloader-progress-bars',
+            LP_URL . 'css/progress-bars.css',
+            [ 'wp-preloader' ],
+            LP_VERSION
+        );
+    }
+
     // Inline dynamic CSS vars
     $overlay_color   = sanitize_hex_color( $o['overlay_color'] ) ?: '#ffffff';
     $overlay_opacity = max( 0, min( 100, absint( $o['overlay_opacity'] ) ) );
@@ -139,8 +158,13 @@ function lp_enqueue_frontend() {
 
     // Pass config to JS
     wp_localize_script( 'wp-preloader', 'lpConfig', [
-        'fade'       => absint( $o['fade_duration'] ),
-        'minDisplay' => absint( $o['min_display'] ),
+        'fade'              => absint( $o['fade_duration'] ),
+        'minDisplay'        => absint( $o['min_display'] ),
+        'spinnerType'       => sanitize_text_field( $o['spinner_type'] ?? 'spinner' ),
+        'animationSpeed'    => $animation_speed,
+        'progressBarStyle'  => sanitize_text_field( $o['progress_bar_style'] ?? 'linear' ),
+        'showProgress'      => ! empty( $o['show_progress'] ),
+        'svgUrl'            => LP_URL . 'assets/svgs/',
     ]);
 }
 
@@ -167,17 +191,29 @@ function lp_register_settings() {
 function lp_sanitize_options( $input ) {
     $d   = lp_defaults();
     $out = [];
-    $out['overlay_color']   = sanitize_hex_color( $input['overlay_color']   ?? $d['overlay_color'] )   ?: $d['overlay_color'];
-    $out['overlay_opacity'] = max( 0,  min( 100,  absint( $input['overlay_opacity'] ?? $d['overlay_opacity'] ) ) );
-    $out['blur_strength']   = max( 0,  min( 40,   absint( $input['blur_strength']   ?? $d['blur_strength'] ) ) );
-    $out['accent_color']  = sanitize_hex_color( $input['accent_color']  ?? $d['accent_color'] )  ?: $d['accent_color'];
-    $out['logo_url']      = esc_url_raw( $input['logo_url']             ?? '' );
-    $out['logo_width']    = max( 20, min( 300, absint( $input['logo_width']   ?? $d['logo_width'] ) ) );
-    $out['fade_duration'] = max( 0,  min( 3000, absint( $input['fade_duration'] ?? $d['fade_duration'] ) ) );
-    $out['min_display']   = max( 0,  min( 5000, absint( $input['min_display']   ?? $d['min_display'] ) ) );
-    $out['show_bar']      = ! empty( $input['show_bar'] );
-    $out['show_ring']     = ! empty( $input['show_ring'] );
-    $out['enable_mobile'] = ! empty( $input['enable_mobile'] );
+    $out['overlay_color']       = sanitize_hex_color( $input['overlay_color']   ?? $d['overlay_color'] )   ?: $d['overlay_color'];
+    $out['overlay_opacity']     = max( 0,  min( 100,  absint( $input['overlay_opacity'] ?? $d['overlay_opacity'] ) ) );
+    $out['blur_strength']       = max( 0,  min( 40,   absint( $input['blur_strength']   ?? $d['blur_strength'] ) ) );
+    $out['accent_color']        = sanitize_hex_color( $input['accent_color']  ?? $d['accent_color'] )  ?: $d['accent_color'];
+    $out['logo_url']            = esc_url_raw( $input['logo_url']             ?? '' );
+    $out['logo_width']          = max( 20, min( 300, absint( $input['logo_width']   ?? $d['logo_width'] ) ) );
+    $out['fade_duration']       = max( 0,  min( 3000, absint( $input['fade_duration'] ?? $d['fade_duration'] ) ) );
+    $out['min_display']         = max( 0,  min( 5000, absint( $input['min_display']   ?? $d['min_display'] ) ) );
+    $out['show_bar']            = ! empty( $input['show_bar'] );
+    $out['show_ring']           = ! empty( $input['show_ring'] );
+    $out['enable_mobile']       = ! empty( $input['enable_mobile'] );
+    
+    // Validate preset options
+    $spinners = array_keys( lp_get_presets() );
+    $out['spinner_type']        = in_array( $input['spinner_type'] ?? '', $spinners, true ) ? sanitize_text_field( $input['spinner_type'] ) : $d['spinner_type'];
+    
+    $speeds = array_keys( lp_get_animation_speeds() );
+    $out['animation_speed']     = in_array( $input['animation_speed'] ?? '', $speeds, true ) ? sanitize_text_field( $input['animation_speed'] ) : $d['animation_speed'];
+    
+    $bars = array_keys( lp_get_progress_bar_styles() );
+    $out['progress_bar_style']  = in_array( $input['progress_bar_style'] ?? '', $bars, true ) ? sanitize_text_field( $input['progress_bar_style'] ) : $d['progress_bar_style'];
+    
+    $out['show_progress']       = ! empty( $input['show_progress'] );
     return $out;
 }
 
@@ -279,6 +315,69 @@ function lp_settings_page() {
                             </label>
                             <input type="range" id="lp-blur" name="<?php echo LP_OPT; ?>[blur_strength]"
                                 min="0" max="40" step="1" value="<?php echo esc_attr( $o['blur_strength'] ); ?>">
+                        </div>
+                    </div>
+
+                    <div class="lp-card">
+                        <h2><?php esc_html_e( 'Preloader Style Presets', 'wp-preloader' ); ?></h2>
+                        
+                        <div class="lp-field">
+                            <label for="lp-spinner-type"><?php esc_html_e( 'Animation Style', 'wp-preloader' ); ?></label>
+                            <select id="lp-spinner-type" name="<?php echo LP_OPT; ?>[spinner_type]" class="regular-text">
+                                <?php 
+                                foreach ( lp_get_presets() as $key => $preset ) {
+                                    echo sprintf(
+                                        '<option value="%s" %s>%s</option>',
+                                        esc_attr( $key ),
+                                        selected( $o['spinner_type'] ?? '', $key, false ),
+                                        esc_html( $preset['label'] )
+                                    );
+                                }
+                                ?>
+                            </select>
+                            <p class="description"><?php esc_html_e( 'Choose your preferred preloader animation style', 'wp-preloader' ); ?></p>
+                        </div>
+
+                        <div class="lp-field">
+                            <label for="lp-animation-speed"><?php esc_html_e( 'Animation Speed', 'wp-preloader' ); ?></label>
+                            <select id="lp-animation-speed" name="<?php echo LP_OPT; ?>[animation_speed]" class="regular-text">
+                                <?php 
+                                foreach ( lp_get_animation_speeds() as $key => $speed ) {
+                                    echo sprintf(
+                                        '<option value="%s" %s>%s</option>',
+                                        esc_attr( $key ),
+                                        selected( $o['animation_speed'] ?? '', $key, false ),
+                                        esc_html( $speed['label'] )
+                                    );
+                                }
+                                ?>
+                            </select>
+                            <p class="description"><?php esc_html_e( 'Control the animation speed of the preloader', 'wp-preloader' ); ?></p>
+                        </div>
+
+                        <div class="lp-field">
+                            <label for="lp-progress-style"><?php esc_html_e( 'Progress Bar Style', 'wp-preloader' ); ?></label>
+                            <select id="lp-progress-style" name="<?php echo LP_OPT; ?>[progress_bar_style]" class="regular-text">
+                                <?php 
+                                foreach ( lp_get_progress_bar_styles() as $key => $style ) {
+                                    echo sprintf(
+                                        '<option value="%s" %s>%s</option>',
+                                        esc_attr( $key ),
+                                        selected( $o['progress_bar_style'] ?? '', $key, false ),
+                                        esc_html( $style['label'] )
+                                    );
+                                }
+                                ?>
+                            </select>
+                            <p class="description"><?php esc_html_e( 'Select how the progress bar should be displayed', 'wp-preloader' ); ?></p>
+                        </div>
+
+                        <div class="lp-field lp-checks">
+                            <label>
+                                <input type="checkbox" name="<?php echo LP_OPT; ?>[show_progress]" value="1"
+                                    <?php checked( $o['show_progress'] ?? true ); ?>>
+                                <?php esc_html_e( 'Show progress animation', 'wp-preloader' ); ?>
+                            </label>
                         </div>
                     </div>
 

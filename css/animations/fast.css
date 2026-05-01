@@ -1,0 +1,69 @@
+/* ========================
+   Animation Styles - FAST
+   ======================== */
+
+/* Spinner Animation - Fast */
+@keyframes lp-spinner-fast {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.lp-animation-fast .lp-svg-spinner .lp-spinner-fill {
+    animation: lp-spinner-fast 0.8s linear infinite;
+}
+
+/* Bouncing Dots - Fast */
+@keyframes lp-bounce-fast {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.lp-animation-fast .lp-dot-1 { animation: lp-bounce-fast 0.6s ease-in-out infinite; }
+.lp-animation-fast .lp-dot-2 { animation: lp-bounce-fast 0.6s ease-in-out infinite 0.1s; }
+.lp-animation-fast .lp-dot-3 { animation: lp-bounce-fast 0.6s ease-in-out infinite 0.2s; }
+
+/* Pulse - Fast */
+@keyframes lp-pulse-fast {
+    0%, 100% { r: 15; opacity: 0; }
+    50% { r: 30; opacity: 0.5; }
+}
+
+@keyframes lp-pulse-center-fast {
+    0%, 100% { r: 8; }
+    50% { r: 12; }
+}
+
+.lp-animation-fast .lp-pulse-ring-1 { animation: lp-pulse-fast 0.8s ease-out infinite; }
+.lp-animation-fast .lp-pulse-ring-2 { animation: lp-pulse-fast 0.8s ease-out infinite 0.3s; }
+.lp-animation-fast .lp-pulse-center { animation: lp-pulse-center-fast 0.8s ease-out infinite; }
+
+/* Bars - Fast */
+@keyframes lp-bar-fast {
+    0%, 100% { height: 30px; }
+    50% { height: 60px; }
+}
+
+.lp-animation-fast .lp-bar-1 { animation: lp-bar-fast 0.6s ease-in-out infinite; }
+.lp-animation-fast .lp-bar-2 { animation: lp-bar-fast 0.6s ease-in-out infinite 0.1s; }
+.lp-animation-fast .lp-bar-3 { animation: lp-bar-fast 0.6s ease-in-out infinite 0.2s; }
+.lp-animation-fast .lp-bar-4 { animation: lp-bar-fast 0.6s ease-in-out infinite 0.3s; }
+.lp-animation-fast .lp-bar-5 { animation: lp-bar-fast 0.6s ease-in-out infinite 0.4s; }
+
+/* Spinner Dots - Fast */
+@keyframes lp-spinner-dots-fast {
+    0% { opacity: 1; }
+    100% { opacity: 0.1; }
+}
+
+.lp-animation-fast .lp-spinner-dot {
+    animation: lp-spinner-dots-fast 0.6s steps(8, end) infinite;
+}
+
+.lp-animation-fast .lp-dot-pos-1 { animation-delay: 0s; }
+.lp-animation-fast .lp-dot-pos-2 { animation-delay: -0.075s; }
+.lp-animation-fast .lp-dot-pos-3 { animation-delay: -0.15s; }
+.lp-animation-fast .lp-dot-pos-4 { animation-delay: -0.225s; }
+.lp-animation-fast .lp-dot-pos-5 { animation-delay: -0.3s; }
+.lp-animation-fast .lp-dot-pos-6 { animation-delay: -0.375s; }
+.lp-animation-fast .lp-dot-pos-7 { animation-delay: -0.45s; }
+.lp-animation-fast .lp-dot-pos-8 { animation-delay: -0.525s; }

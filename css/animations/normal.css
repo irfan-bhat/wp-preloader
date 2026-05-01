@@ -1,0 +1,69 @@
+/* ========================
+   Animation Styles - NORMAL
+   ======================== */
+
+/* Spinner Animation - Normal */
+@keyframes lp-spinner-normal {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.lp-animation-normal .lp-svg-spinner .lp-spinner-fill {
+    animation: lp-spinner-normal 1.5s linear infinite;
+}
+
+/* Bouncing Dots - Normal */
+@keyframes lp-bounce-normal {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.lp-animation-normal .lp-dot-1 { animation: lp-bounce-normal 0.9s ease-in-out infinite; }
+.lp-animation-normal .lp-dot-2 { animation: lp-bounce-normal 0.9s ease-in-out infinite 0.15s; }
+.lp-animation-normal .lp-dot-3 { animation: lp-bounce-normal 0.9s ease-in-out infinite 0.3s; }
+
+/* Pulse - Normal */
+@keyframes lp-pulse-normal {
+    0%, 100% { r: 15; opacity: 0; }
+    50% { r: 30; opacity: 0.5; }
+}
+
+@keyframes lp-pulse-center-normal {
+    0%, 100% { r: 8; }
+    50% { r: 12; }
+}
+
+.lp-animation-normal .lp-pulse-ring-1 { animation: lp-pulse-normal 1.2s ease-out infinite; }
+.lp-animation-normal .lp-pulse-ring-2 { animation: lp-pulse-normal 1.2s ease-out infinite 0.4s; }
+.lp-animation-normal .lp-pulse-center { animation: lp-pulse-center-normal 1.2s ease-out infinite; }
+
+/* Bars - Normal */
+@keyframes lp-bar-normal {
+    0%, 100% { height: 30px; }
+    50% { height: 60px; }
+}
+
+.lp-animation-normal .lp-bar-1 { animation: lp-bar-normal 0.8s ease-in-out infinite; }
+.lp-animation-normal .lp-bar-2 { animation: lp-bar-normal 0.8s ease-in-out infinite 0.1s; }
+.lp-animation-normal .lp-bar-3 { animation: lp-bar-normal 0.8s ease-in-out infinite 0.2s; }
+.lp-animation-normal .lp-bar-4 { animation: lp-bar-normal 0.8s ease-in-out infinite 0.3s; }
+.lp-animation-normal .lp-bar-5 { animation: lp-bar-normal 0.8s ease-in-out infinite 0.4s; }
+
+/* Spinner Dots - Normal */
+@keyframes lp-spinner-dots-normal {
+    0% { opacity: 1; }
+    100% { opacity: 0.1; }
+}
+
+.lp-animation-normal .lp-spinner-dot {
+    animation: lp-spinner-dots-normal 0.8s steps(8, end) infinite;
+}
+
+.lp-animation-normal .lp-dot-pos-1 { animation-delay: 0s; }
+.lp-animation-normal .lp-dot-pos-2 { animation-delay: -0.1s; }
+.lp-animation-normal .lp-dot-pos-3 { animation-delay: -0.2s; }
+.lp-animation-normal .lp-dot-pos-4 { animation-delay: -0.3s; }
+.lp-animation-normal .lp-dot-pos-5 { animation-delay: -0.4s; }
+.lp-animation-normal .lp-dot-pos-6 { animation-delay: -0.5s; }
+.lp-animation-normal .lp-dot-pos-7 { animation-delay: -0.6s; }
+.lp-animation-normal .lp-dot-pos-8 { animation-delay: -0.7s; }
