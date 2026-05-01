@@ -23,6 +23,7 @@ define( 'LP_GITHUB_REPO', 'irfanbhat/wordpress-preloader' );
    Plugin update checker (GitHub releases)
 --------------------------------------------------------------- */
 require_once LP_DIR . 'includes/plugin-update-checker.php';
+require_once LP_DIR . 'includes/presets.php';
 
 add_action( 'plugins_loaded', function() {
     new LP_Github_Updater( LP_GITHUB_REPO, plugin_basename( __FILE__ ), 'wp-preloader' );
@@ -33,17 +34,21 @@ add_action( 'plugins_loaded', function() {
 --------------------------------------------------------------- */
 function lp_defaults() {
     return [
-        'overlay_color'  => '#ffffff',
-        'overlay_opacity'=> 20,
-        'blur_strength'  => 12,
-        'accent_color'   => '#DC501E',
-        'logo_url'       => '',
-        'logo_width'     => 64,
-        'show_bar'       => true,
-        'show_ring'      => true,
-        'fade_duration'  => 500,
-        'min_display'    => 800,
-        'enable_mobile'  => true,
+        'overlay_color'      => '#ffffff',
+        'overlay_opacity'    => 20,
+        'blur_strength'      => 12,
+        'accent_color'       => '#DC501E',
+        'logo_url'           => '',
+        'logo_width'         => 64,
+        'show_bar'           => true,
+        'show_ring'          => true,
+        'fade_duration'      => 500,
+        'min_display'        => 800,
+        'enable_mobile'      => true,
+        'spinner_type'       => 'spinner',
+        'animation_speed'    => 'normal',
+        'progress_bar_style' => 'linear',
+        'show_progress'      => true,
     ];
 }
 
@@ -66,6 +71,9 @@ register_activation_hook( __FILE__, function() {
 add_action( 'wp_body_open', 'lp_render_preloader' );
 function lp_render_preloader() {
     $o        = lp_options();
+
+    // Skip on mobile if disabled
+    if ( ! $o['enable_mobile'] && wp_is_mobile() ) return;
     $logo_src = esc_url( $o['logo_url'] );
     $logo_w   = absint( $o['logo_width'] );
     $show_img = $logo_src ? "<img src=\"{$logo_src}\" alt=\"\" style=\"width:{$logo_w}px;\">" : '';
