@@ -1,13 +1,14 @@
 <?php
 /**
- * Plugin Name: WordPress Preloader
- * Plugin URI:  https://irfanbhat.com
+ * Plugin Name: WP Preloader
+ * Plugin URI:  https://wordpress.org/plugins/wp-preloader/
  * Description: A customisable full-screen backdrop-blur preloader with your logo, spinner, and progress bar.
  * Version:     1.2.0
  * Author:      Irfan Bhat
  * Author URI:  https://irfanbhat.com
  * License:     GPL-2.0+
- * Text Domain: wordpress-preloader
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: wp-preloader
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -180,7 +181,7 @@ function lp_settings_page() {
     $o = lp_options();
     ?>
     <div class="wrap lp-wrap-admin">
-        <h1><?php esc_html_e( 'WordPress Preloader Settings', 'wordpress-preloader' ); ?></h1>
+        <h1><?php esc_html_e( 'WP Preloader Settings', 'wp-preloader' ); ?></h1>
 
         <div class="lp-admin-layout">
             <!-- ── Form ── -->
@@ -189,7 +190,7 @@ function lp_settings_page() {
                     <?php settings_fields( 'logo_preloader_group' ); ?>
 
                     <div class="lp-card">
-                        <h2><?php esc_html_e( 'Logo', 'wordpress-preloader' ); ?></h2>
+                        <h2><?php esc_html_e( 'Logo', 'wp-preloader' ); ?></h2>
 
                         <div class="lp-field">
                             <label><?php esc_html_e( 'Logo image', 'wordpress-preloader' ); ?></label>
