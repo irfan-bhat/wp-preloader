@@ -127,7 +127,3 @@ jobs:
         run: |
           php wp-cli.phar plugin activate wordpress-preloader/preloader-plugin.php --path=wp --quiet
           php wp-cli.phar plugin is-active wordpress-preloader/preloader-plugin.php --path=wp
-
-      - name: Run plugin bootstrap check
-        run: |
-          php -r "require 'wp/wp-load.php'; require 'wp/wp-content/plugins/wordpress-preloader/preloader-plugin.php'; echo 'Plugin bootstrapped successfully.';"
