@@ -33,7 +33,7 @@ WP Preloader creates a stylish full-screen loading screen using CSS `backdrop-fi
 
 1. Upload the plugin folder to `/wp-content/plugins/`
 2. Activate the plugin through the **Plugins** menu
-3. Go to **Settings › Logo Preloader** to configure the appearance and behavior
+3. Go to **Settings › WP Preloader** to configure the appearance and behavior
 4. If your theme does not already include it, add `<?php wp_body_open(); ?>` immediately after the opening `<body>` tag in `header.php`
 
 ## Frequently Asked Questions

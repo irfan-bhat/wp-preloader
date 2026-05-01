@@ -60,7 +60,7 @@ function lp_render_preloader() {
     $logo_w   = absint( $o['logo_width'] );
     $show_img = $logo_src ? "<img src=\"{$logo_src}\" alt=\"\" style=\"width:{$logo_w}px;\">" : '';
     ?>
-    <div id="lp-preloader" role="status" aria-label="<?php esc_attr_e( 'Loading', 'logo-preloader' ); ?>">
+    <div id="lp-preloader" role="status" aria-label="<?php esc_attr_e( 'Loading', 'wp-preloader' ); ?>">
         <div class="lp-inner">
             <?php if ( $o['show_ring'] ) : ?>
             <div class="lp-wrap">
@@ -90,7 +90,7 @@ function lp_enqueue_frontend() {
     if ( ! $o['enable_mobile'] && wp_is_mobile() ) return;
 
     wp_enqueue_style(
-        'logo-preloader',
+        'wp-preloader',
         LP_URL . 'css/preloader.css',
         [],
         LP_VERSION
@@ -109,10 +109,10 @@ function lp_enqueue_frontend() {
     $rgba    = "rgba({$r},{$g},{$b},{$alpha})";
 
     $inline  = "#lp-preloader{--lp-overlay:{$rgba};--lp-blur:{$blur}px;--lp-accent:{$accent};--lp-logo-w:{$logo_w}px;}";
-    wp_add_inline_style( 'logo-preloader', $inline );
+    wp_add_inline_style( 'wp-preloader', $inline );
 
     wp_enqueue_script(
-        'logo-preloader',
+        'wp-preloader',
         LP_URL . 'js/preloader.js',
         [],
         LP_VERSION,
@@ -120,7 +120,7 @@ function lp_enqueue_frontend() {
     );
 
     // Pass config to JS
-    wp_localize_script( 'logo-preloader', 'lpConfig', [
+    wp_localize_script( 'wp-preloader', 'lpConfig', [
         'fade'       => absint( $o['fade_duration'] ),
         'minDisplay' => absint( $o['min_display'] ),
     ]);
@@ -131,17 +131,17 @@ function lp_enqueue_frontend() {
 --------------------------------------------------------------- */
 add_action( 'admin_menu', function() {
     add_options_page(
-        __( 'Logo Preloader', 'logo-preloader' ),
-        __( 'Logo Preloader', 'logo-preloader' ),
+        __( 'WP Preloader', 'wp-preloader' ),
+        __( 'WP Preloader', 'wp-preloader' ),
         'manage_options',
-        'logo-preloader',
+        'wp-preloader',
         'lp_settings_page'
     );
 });
 
 add_action( 'admin_init', 'lp_register_settings' );
 function lp_register_settings() {
-    register_setting( 'logo_preloader_group', LP_OPT, [
+    register_setting( 'wp_preloader_group', LP_OPT, [
         'sanitize_callback' => 'lp_sanitize_options',
     ]);
 }
@@ -167,7 +167,7 @@ function lp_sanitize_options( $input ) {
    Admin: enqueue media uploader
 --------------------------------------------------------------- */
 add_action( 'admin_enqueue_scripts', function( $hook ) {
-    if ( $hook !== 'settings_page_logo-preloader' ) return;
+    if ( $hook !== 'settings_page_wp-preloader' ) return;
     wp_enqueue_media();
     wp_enqueue_style( 'lp-admin', LP_URL . 'admin/admin.css', [], LP_VERSION );
     wp_enqueue_script( 'lp-admin', LP_URL . 'admin/admin.js', [ 'jquery' ], LP_VERSION, true );
@@ -187,7 +187,7 @@ function lp_settings_page() {
             <!-- ── Form ── -->
             <div class="lp-form-col">
                 <form method="post" action="options.php">
-                    <?php settings_fields( 'logo_preloader_group' ); ?>
+                    <?php settings_fields( 'wp_preloader_group' ); ?>
 
                     <div class="lp-card">
                         <h2><?php esc_html_e( 'Logo', 'wp-preloader' ); ?></h2>
@@ -302,7 +302,7 @@ function lp_settings_page() {
                         </div>
                     </div>
 
-                    <?php submit_button( __( 'Save settings', 'logo-preloader' ) ); ?>
+                    <?php submit_button( __( 'Save settings', 'wp-preloader' ) ); ?>
                 </form>
             </div>
 

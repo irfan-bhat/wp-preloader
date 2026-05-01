@@ -1,4 +1,4 @@
-/* Logo Preloader — front-end script */
+/* WP Preloader — front-end script */
 (function () {
     var el   = document.getElementById('lp-preloader');
     var fill = el && el.querySelector('.lp-fill');
