@@ -106,10 +106,6 @@ jobs:
             --dbprefix=wp_ \
             --quiet
 
-      - name: Create database
-        run: |
-          php wp-cli.phar db create --path=wp --quiet
-
       - name: Install WordPress
         run: |
           php wp-cli.phar core install \
